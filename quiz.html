@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>The Cinephile's Quiz</title>
+        <meta name="description" content="A quiz for cinephiles to test their cine-mettle.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <div class="header__content">
+                <div class="header__counter header__counter--left header__question-number">
+                    <p>Question</p>
+                    <h3>
+                        <span id="js-question-number-span">
+                            0
+                            <!--filled in with JS-->
+                        </span>/
+                        <span id="js-question-total-span">
+                            0
+                            <!--filled in with JS-->
+                        </span>
+                    </h3>
+                </div>
+                <h1>The Cinephile's Quiz</h1>
+                <div class="header__counter header__counter--right header__score">
+                    <p>Score</p>
+                    <h3>
+                        <span id="js-scorekeeper-correct-span">
+                                <!--filled in with JS-->
+                        </span> Correct, 
+                        <span id="js-scorekeeper-incorrect-span">
+                                <!--filled in with JS-->
+                        </span> Incorrect
+                    </h3>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section class="screen">
+                <form>
+                    <fieldset>
+                        <legend id="question">
+                            <!--quiz question is filled in with JS -->
+                        </legend>
+                        <ul class="answers-list">
+                            <!--quiz answers are filled in with JS-->
+                        </ul>
+                    </fieldset>
+                    <nav class="bottom-nav-bar">
+                        <div class="bottom-nav-bar__content">
+                            <button id="answer-submit" role="button" type="submit">
+                                Submit Answer
+                            </button>
+                        </div>
+                    </nav>
+                </form>
+            </section>
+        </main>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
+        <script src="//code.jquery.com/jquery.min.js"></script>
+        <script src="store.js"></script>
+        <script src="scripts.js"></script>
+    </body>
+</html>

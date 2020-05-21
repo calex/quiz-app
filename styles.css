@@ -209,6 +209,11 @@ fieldset {
     height: 100%; 
 }
 
+
+.answer--no-image > label {
+    justify-content: center; 
+}
+
 .answers-list {
     height: 100%;
     display: flex;
