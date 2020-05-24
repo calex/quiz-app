@@ -1,9 +1,7 @@
 'use strict';
 
 function generateQuizAnswerElement(item, index) {
-
-    console.log('`generateQuizAnswerElement` ran');
-
+    // generate DOM elements for quiz answers from the store (see store.js)
     const itemSupportingInfoText = (item.supportingInfoText.length > 0) ? `(<i>${item.supportingInfoText}</i>)` : "";
 
     const hasNoImage = (item.supportingImageUri.length <= 0);
@@ -13,21 +11,22 @@ function generateQuizAnswerElement(item, index) {
     const itemImage = !hasNoImage ? `<img class='answer__image' src="images/${item.supportingImageUri}" alt="${item.supportingImageAltText}">` : "";
 
     return `
-        <li class="answer ${hasNoImageClass}">
-            <label>
+        <li role="radio" class="answer ${hasNoImageClass}" tabindex="0">
+            <input type="radio" name="question-${USERDATASTORE.currentStep}" id="question-${index}" value="${item.id}" tabindex="0">
+            <label for="question-${index}" tabindex="0">
                 ${itemImage}
-                <input type="radio" name="question-${USERDATASTORE.currentStep}" id="question-${index}" value="${item.id}">
+                <p>
                     ${item.answerText} 
                     ${itemSupportingInfoText}
-                </label>
-            </li>
-        `;
+                </p>
+            </label>
+        </li>
+    `;
 }
   
   
 function generateQuizAnswersString(quizAnswers) {
-    console.log('`generateQuizAnswersString` ran');
-  
+    // string the generated DOM elements into an HTML string   
     const items = quizAnswers.map((item, index) => generateQuizAnswerElement(item, index));
     
     return items.join("");
@@ -35,11 +34,8 @@ function generateQuizAnswersString(quizAnswers) {
   
   
 function renderQuizQuestionAndAnswers() {
-    // render the quiz answers in the DOM
-    console.log('`renderQuizQuestionAndAnswers` ran');
-
+    // get rendered DOM elements that contain possible answers, as HTML string
     let currentQuestionNumber = USERDATASTORE.currentStep - 1; 
-
     const quizAnswersString = generateQuizAnswersString(QUESTIONSTORE[currentQuestionNumber].possibleAnswers);
   
     // insert that HTML into the DOM
@@ -48,9 +44,7 @@ function renderQuizQuestionAndAnswers() {
 }
 
 function renderQuizHeaderElements() {
-    // render the quiz header in the DOM
-    console.log('`renderQuizHeaderElements` ran');
-    
+    // render the quiz header in the DOM    
     $('#js-question-number-span').text(`${USERDATASTORE.currentStep}`);
     $('#js-question-total-span').text(`${QUESTIONSTORE.length}`);
 
@@ -64,19 +58,12 @@ function renderQuizScreen() {
 }
 
 function proceedToNextStep() {
-    //console.log('`proceedToNextStep` ran');
-    console.log(`USERDATASTORE.currentStep is ${USERDATASTORE.currentStep}`);
-
     USERDATASTORE.currentStep++;
 
     renderQuizScreen();
-
-    console.log(`USERDATASTORE.currentStep has been incremented to ${USERDATASTORE.currentStep}`);
 }
 
 function resetQuiz() {
-    console.log('`resetQuiz` ran');
-
     USERDATASTORE.currentStep = 1; 
     USERDATASTORE.correctScore = 0; 
     USERDATASTORE.incorrectScore = 0; 
@@ -85,9 +72,31 @@ function resetQuiz() {
 }
 
 function resetBottomBarToDefaultState() {
+    $('.answers-list').removeClass('answers-list--w-bottom-nav-bar-showing');
     $('#answer-submit').show();
     $('.answer-revealer').remove();
     $('.bottom-nav-bar').removeClass('bottom-nav-bar--reveal-mode');
+    $('.bottom-nav-bar').removeClass('bottom-nav-bar--reveal-button-mode');
+    $('.reveal-mode-scrim').removeClass('reveal-mode-scrim--active');
+}
+
+function flashColorTimeout(domElement, color) {
+    $(domElement).css('color', color);
+
+    const flashColorTimeout = window.setTimeout(function() {
+        $(domElement).css('color', '');
+    }, 500);
+}
+
+function selectAnswer() {
+    $('.answers-list').on('click', 'input', event => {
+         $('.answers-list').addClass('answers-list--w-bottom-nav-bar-showing');
+         $('.bottom-nav-bar').addClass('bottom-nav-bar--reveal-button-mode');
+    });
+}
+
+function isEndOfQuiz() {
+    return (USERDATASTORE.currentStep === QUESTIONSTORE.length);
 }
 
 function submitAnswer() {
@@ -101,53 +110,57 @@ function submitAnswer() {
 
             let selectedAnswer = QUESTIONSTORE[USERDATASTORE.currentStep - 1].possibleAnswers.find(item => item.id === inputtedAnswer);
 
-            console.log("selectedAnswer is: ", selectedAnswer);
-
             if (selectedAnswer !== undefined) {
 
                 let basicAnswerRevealText = ""; 
+                let basicAnswerRevealTextClass = "";
 
                 if (selectedAnswer.number === QUESTIONSTORE[USERDATASTORE.currentStep - 1].correctAnswerNumber) {
 
                     basicAnswerRevealText = "Correct!";
-
-                    console.log("Correct answer!");
+                    basicAnswerRevealTextClass = "answer-revealer__title--correct";
 
                     USERDATASTORE.correctScore++; 
+
+                    flashColorTimeout('#js-scorekeeper-correct-span', '#a6caff');
 
                 } else { 
 
                     basicAnswerRevealText = "Incorrect!";
-
-                    console.log("Incorrect answer!");
+                    basicAnswerRevealTextClass = "answer-revealer__title--incorrect";
 
                     USERDATASTORE.incorrectScore++; 
+
+                    flashColorTimeout('#js-scorekeeper-incorrect-span', '#f5b9b9');
                 }
 
+                // ensures the score updates right away
                 renderQuizHeaderElements();
 
                 $(event.currentTarget).hide();
 
-                const isEndOfQuiz = USERDATASTORE.currentStep === QUESTIONSTORE.length;
-
                 const endQuizHtml = `
                     <div class="answer-revealer">
-                        <p><b>${basicAnswerRevealText}</b> ${selectedAnswer.answerGuessedResponseHtml}</p>
+                        <h3 class='${basicAnswerRevealTextClass}'>${basicAnswerRevealText}</h3>
+                        <p>${selectedAnswer.answerGuessedResponseHtml}</p>
                         <p>And that's a wrap, folks! You scored ${USERDATASTORE.correctScore} out of ${QUESTIONSTORE.length}.</p>
-                        <button id='start-over' role='button'>Start again</button>
+                        <button id='start-over' role='button' class='screen__button answer-revealer__button'>Start again</button>
                     </div>            
                 `;
 
                 const revealAnswerHtml = `
                     <div class="answer-revealer">
-                        <p><b>${basicAnswerRevealText}</b> ${selectedAnswer.answerGuessedResponseHtml}</p>
-                        <button id='next-question' role='button'>Proceed to Next Question</button>
+                        <h3 class='${basicAnswerRevealTextClass}'>${basicAnswerRevealText}</h3>
+                        <p>${selectedAnswer.answerGuessedResponseHtml}</p>
+                        <button id='next-question' role='button' tabindex='0' class='screen__button answer-revealer__button'>Proceed <span class="extraneous-label-text">to Next Question</span></button>
                     <div>
                 `;
 
-                const bottomNavBarHtml = isEndOfQuiz ? endQuizHtml : revealAnswerHtml;
+                const bottomNavBarHtml = isEndOfQuiz() ? endQuizHtml : revealAnswerHtml;
 
-                $('.bottom-nav-bar').addClass('bottom-nav-bar--reveal-mode').append(bottomNavBarHtml);
+                $('.bottom-nav-bar').addClass('bottom-nav-bar--reveal-mode');
+                $('.reveal-mode-scrim').addClass('reveal-mode-scrim--active');
+                $('.bottom-nav-bar__content').append(bottomNavBarHtml);
             }
 
             else {
@@ -162,15 +175,27 @@ function submitAnswer() {
     });
 }
 
+document.addEventListener("keydown", event => {
+    // for accessibility; allows enter key to trigger next step or quiz refresh on proceed/start over buttons
+    // TODO: there's probably a better way to do this in the future than reading off a DOM element class! 
+    if (event.key === 'Enter' && $('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
+                
+        resetBottomBarToDefaultState(); 
+
+        if (!isEndOfQuiz()) {
+            proceedToNextStep();
+        }
+        else {
+            resetQuiz();
+        }
+    }
+});
+
 function nextQuestion() {
-    $('.bottom-nav-bar').on('click', '#next-question', function(event) {
-        console.log('clicked #next-question');
-        
+    $('.bottom-nav-bar').on('click', '#next-question', function(event) {        
         event.preventDefault();
 
-        const isEndOfQuiz = (USERDATASTORE.currentStep === QUESTIONSTORE.length);
-
-        if (!isEndOfQuiz) {
+        if (!isEndOfQuiz()) {
             resetBottomBarToDefaultState();           
             proceedToNextStep(); 
         }
@@ -188,6 +213,7 @@ function startOver() {
 
 function runApp() {
     renderQuizScreen();
+    selectAnswer();
     submitAnswer();
     nextQuestion();
     startOver();

@@ -4,13 +4,20 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>The Cinephile's Quiz</title>
-        <meta name="description" content="A quiz for cinephiles to test their cine-mettle.">
+        
+        <title>Cinephilia | A quizlet for movie nerds</title>
+        
+        <meta name="description" content="Cinephilia: a quizlet for movie nerds">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&family=Overpass+Mono:wght@300&display=swap" rel="stylesheet">  
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&display=swap" rel="stylesheet">
+        
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <header>
+        <header class="header">
             <div class="header__content">
                 <div class="header__counter header__counter--left header__question-number">
                     <p>Question</p>
@@ -18,35 +25,52 @@
                         <span id="js-question-number-span">
                             0
                             <!--filled in with JS-->
-                        </span>/
+                        </span>
+                        <i>of</i>
                         <span id="js-question-total-span">
                             0
                             <!--filled in with JS-->
                         </span>
                     </h3>
                 </div>
-                <h1>The Cinephile's Quiz</h1>
+                <hgroup class="app-title-section header__title-section">
+                    <h1>Cinephilia</h1>
+                    <h5>&middot;&emsp;A quizlet for movie nerds&emsp;&middot;</h5>
+                </hgroup>
                 <div class="header__counter header__counter--right header__score">
                     <p>Score</p>
                     <h3>
+                        <span class="header__score--symbol" aria-label="Correct Answers">
+                            &plus;
+                        </span>
                         <span id="js-scorekeeper-correct-span">
                                 <!--filled in with JS-->
-                        </span> Correct, 
+                        </span> 
+                        <span class="header__score--text">
+                            Correct 
+                        </span>
+                        ,
+                        <span class="header__score--symbol" aria-label="Incorrect Answers">
+                            &minus;
+                        </span>
                         <span id="js-scorekeeper-incorrect-span">
                                 <!--filled in with JS-->
-                        </span> Incorrect
+                        </span>
+                        <span class="header__score--text">
+                            Incorrect
+                        </span>
                     </h3>
                 </div>
             </div>
         </header>
         <main>
             <section class="screen">
-                <form>
+                <form id="quiz-form">
                     <fieldset>
-                        <legend id="question">
-                            <!--quiz question is filled in with JS -->
+                        <legend id="quiz-form__label">
+                            <p id="question"><!--quiz question is filled in with JS --></p>
                         </legend>
-                        <ul class="answers-list">
+                        <ul class="answers-list" role="radiogroup" aria-labelledby="quiz-form__label" tabindex="0">
                             <!--quiz answers are filled in with JS-->
                         </ul>
                     </fieldset>
@@ -60,6 +84,7 @@
                 </form>
             </section>
         </main>
+        <div class="reveal-mode-scrim"></div>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
         <script src="//code.jquery.com/jquery.min.js"></script>
         <script src="store.js"></script>

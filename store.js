@@ -38,7 +38,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "kane-gregg-toland.jpg",
                 supportingImageAltText: "",
                 supportingInfoText: "Citizen Kane",
-                answerGuessedResponseHtml: "Although <i>Citizen Kane</i> is considered by many to be the greatest film of all time, Toland did not win the Oscar for his work on the movie. Toland, considered one of the most influential cinematographer of all time, only won the Best Cinematography Oscar once, for 1939's <i>Wuthering Heights</i>."
+                answerGuessedResponseHtml: "Although <i>Citizen Kane</i> is considered by many to be the greatest film of all time, Toland did not win the Oscar for his work on the movie. Toland, considered one of the most influential cinematographers of all time, only won the Best Cinematography Oscar once, for 1939's <i>Wuthering Heights</i>."
             },
             {
                 id: cuid(),
@@ -47,7 +47,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "godfather-gordon-willis.jpg",
                 supportingImageAltText: "",
                 supportingInfoText: "The Godfather",
-                answerGuessedResponseHtml: "Unbelievably, Willis never won an Oscar for Cinematography. While the films he worked on between 1970-1977 (including <i>The Godfather</i>, <i>All the President's Men</i>, and <i>Annie Hall</i>) are considered master classes in film lighting, and received a combined 39 nominations, he was not even <i>nominated</i> for an Oscar during this period."
+                answerGuessedResponseHtml: "Unbelievably, Willis never won an Oscar for Cinematography. While the films he worked on between 1970-1977 (including <i>The Godfather</i>, <i>All the President’s Men</i>, and <i>Annie Hall</i>) are considered master classes in film lighting, and received a combined 39 nominations, he was not even <i>nominated</i> for an Oscar during this period."
             },
             {
                 id: cuid(),
@@ -255,7 +255,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "uncut-gems.jpg",
                 supportingImageAltText: "Movie still from Uncut Gems",
                 supportingInfoText: "2019",
-                answerGuessedResponseHtml: "Though it does star Adam Sandler&mdash;like the movie that is the correct answer to this question (hint hint!)&mdash;and is full of grandiose and bombastic dialogue, this was not a line in the film."
+                answerGuessedResponseHtml: "Though it does star Adam Sandler&mdash;like the movie that is the correct answer to this question (hint hint!)&mdash;and is full of grandiose and bombastic dialogue similar to the quote in the question, this was not a line in the film."
             },
             {
                 id: cuid(),
