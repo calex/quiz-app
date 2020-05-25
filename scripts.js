@@ -177,10 +177,11 @@ function submitAnswer() {
 
 function listenForKeyDown() {
     document.addEventListener("keydown", event => {
-        // for accessibility; allows enter key to trigger next step or quiz refresh on proceed/start over buttons
+        // for accessibility; allows enter or space key to trigger next step or quiz refresh on proceed/start over buttons
         // TODO: there's probably a better way to do this in the future than reading off a DOM element class! 
-        if ((event.key === 'Enter') && $('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
+        if ((event.key === " " || event.key === "Enter" || event.key === "Spacebar") && $('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
 
+            event.preventDefault(); //prevents scroll on space bar
             resetBottomBarToDefaultState(); 
 
             if (!isEndOfQuiz()) {
