@@ -175,21 +175,23 @@ function submitAnswer() {
     });
 }
 
-document.addEventListener("keydown", event => {
-    // for accessibility; allows enter key to trigger next step or quiz refresh on proceed/start over buttons
-    // TODO: there's probably a better way to do this in the future than reading off a DOM element class! 
-    if (event.key === 'Enter' && $('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
-                
-        resetBottomBarToDefaultState(); 
+function listenForKeyDown() {
+    document.addEventListener("keydown", event => {
+        // for accessibility; allows enter key to trigger next step or quiz refresh on proceed/start over buttons
+        // TODO: there's probably a better way to do this in the future than reading off a DOM element class! 
+        if ((event.key === 'Enter') && $('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
 
-        if (!isEndOfQuiz()) {
-            proceedToNextStep();
+            resetBottomBarToDefaultState(); 
+
+            if (!isEndOfQuiz()) {
+                proceedToNextStep();
+            }
+            else {
+                resetQuiz();
+            }
         }
-        else {
-            resetQuiz();
-        }
-    }
-});
+    });
+}
 
 function nextQuestion() {
     $('.bottom-nav-bar').on('click', '#next-question', function(event) {        
@@ -214,6 +216,7 @@ function startOver() {
 function runApp() {
     renderQuizScreen();
     selectAnswer();
+    listenForKeyDown();
     submitAnswer();
     nextQuestion();
     startOver();
