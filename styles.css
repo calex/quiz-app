@@ -1,7 +1,7 @@
 /* Variables */
 
 :root {
-    --darkest-gray-color: #14181c;;
+    --darkest-gray-color: #14181c;
     --mid-silver-color: #456; 
     --light-silver-color: #abc;
     --error-color: #f5b9b9;
@@ -422,10 +422,6 @@ input[type="radio"] {
     margin-left: -9999px;
 }
 
-input[type="radio"]:focus {
-    outline: 0; 
-}
-
 input[type="radio"] + label {
     cursor: pointer;
     position: relative; 
@@ -547,6 +543,8 @@ fieldset > legend {
 }
 
 legend #question {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -561,6 +559,10 @@ legend #question {
 
 .answer-revealer__title--incorrect {
     color: var(--error-color);
+}
+
+.answer-revealer__title--incorrect #revealed-correct-answer {
+    font-style: italic; 
 }
 
 .answer-revealer__title--correct {
@@ -588,6 +590,8 @@ legend #question {
         font-size: 0.5em;
     }
 
+    .answer-revealer__title--incorrect,
+    .answer-revealer__title--correct,
     .header__title-section h1,
     .header__counter h3 {
         font-size: 1em;

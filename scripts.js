@@ -11,14 +11,14 @@ function generateQuizAnswerElement(item, index) {
     const itemImage = !hasNoImage ? `<img class='answer__image' src="images/${item.supportingImageUri}" alt="${item.supportingImageAltText}">` : "";
 
     return `
-        <li role="radio" class="answer ${hasNoImageClass}" tabindex="0">
+        <li role="radio" class="answer ${hasNoImageClass}" aria-checked="false">
             <input type="radio" name="question-${USERDATASTORE.currentStep}" id="question-${index}" value="${item.id}" tabindex="0">
             <label for="question-${index}" tabindex="0">
                 ${itemImage}
-                <p>
+                <span class='label__answer'>
                     ${item.answerText} 
                     ${itemSupportingInfoText}
-                </p>
+                </span>
             </label>
         </li>
     `;
@@ -99,96 +99,128 @@ function isEndOfQuiz() {
     return (USERDATASTORE.currentStep === QUESTIONSTORE.length);
 }
 
+function returnEndQuizSummaryHtml(basicAnswerRevealTextClass, basicAnswerRevealText, answerGuessedResponseHtml, totalCorrectScore, totalNumberOfQuestions) {
+    return `<div class="answer-revealer">
+        <h3 class='${basicAnswerRevealTextClass}'>${basicAnswerRevealText}</h3>
+        <p>${answerGuessedResponseHtml}</p>
+        <p>And that's a wrap, folks! You scored ${totalCorrectScore} out of ${totalNumberOfQuestions}.</p>
+        <button id='start-over' role='button' class='screen__button answer-revealer__button'>Start again</button>
+    </div>`;
+}
+ 
+function returnRevealAnswerHtml(basicAnswerRevealTextClass, basicAnswerRevealText, answerGuessedResponseHtml) {
+    return `
+        <div class="answer-revealer">
+            <h3 class='${basicAnswerRevealTextClass}'>${basicAnswerRevealText}</h3>
+            <p>${answerGuessedResponseHtml}</p>
+            <button id='next-question' role='button' class='screen__button answer-revealer__button'>Proceed <span class="extraneous-label-text">to Next Question</span></button>
+        <div>`
+    ;
+}
+
+function returnBottomNavBarHtml(answerIsCorrect, selectedAnswer) {
+    let basicAnswerRevealText = ""; 
+    let basicAnswerRevealTextClass = "";
+
+    if (answerIsCorrect) {
+        
+        basicAnswerRevealText = "Correct!";
+        basicAnswerRevealTextClass = "answer-revealer__title--correct";
+    }
+
+    else {
+
+        let correctAnswerObject = QUESTIONSTORE[USERDATASTORE.currentStep - 1].possibleAnswers.find(item => item.number === QUESTIONSTORE[USERDATASTORE.currentStep - 1].correctAnswerNumber);
+ 
+        basicAnswerRevealText = `Incorrect! The correct answer is <span id='revealed-correct-answer'>${correctAnswerObject.answerText}.</span>`;
+        basicAnswerRevealTextClass = "answer-revealer__title--incorrect";
+    }
+
+    const bottomNavBarHtml = isEndOfQuiz() 
+        ? returnEndQuizSummaryHtml(basicAnswerRevealTextClass, basicAnswerRevealText, selectedAnswer.answerGuessedResponseHtml, USERDATASTORE.correctScore, QUESTIONSTORE.length) 
+        : returnRevealAnswerHtml(basicAnswerRevealTextClass, basicAnswerRevealText, selectedAnswer.answerGuessedResponseHtml);
+
+    return bottomNavBarHtml;
+}
+
+function popupAnswerRevealer() {
+    let inputtedAnswer = $(`input[name=question-${USERDATASTORE.currentStep}]:checked`).val();
+
+    if (inputtedAnswer !== undefined) {
+
+        let selectedAnswer = QUESTIONSTORE[USERDATASTORE.currentStep - 1].possibleAnswers.find(item => item.id === inputtedAnswer);
+
+        if (selectedAnswer !== undefined) {
+
+            let selectedAnswerIsCorrect = selectedAnswer.number === QUESTIONSTORE[USERDATASTORE.currentStep - 1].correctAnswerNumber; 
+
+            if (selectedAnswerIsCorrect) {
+
+                USERDATASTORE.correctScore++; 
+
+                flashColorTimeout('#js-scorekeeper-correct-span', '#a6caff');
+
+            } else { 
+
+                USERDATASTORE.incorrectScore++; 
+
+                flashColorTimeout('#js-scorekeeper-incorrect-span', '#f5b9b9');
+            }
+
+            // ensures the score updates right away
+            renderQuizHeaderElements();
+
+            $('#answer-submit').hide();
+
+            $('.bottom-nav-bar').addClass('bottom-nav-bar--reveal-mode');
+            $('.reveal-mode-scrim').addClass('reveal-mode-scrim--active');
+
+            let bottomNavBarHtml = returnBottomNavBarHtml(selectedAnswerIsCorrect, selectedAnswer);
+
+            $('.bottom-nav-bar__content').append(bottomNavBarHtml);
+        }
+
+        else {
+            console.log("Something went wrong: the selected answer does not exist in the database store");
+        }
+
+    } else {
+        console.log("Nothing was chosen before the user clicked the submit button");
+    } 
+}
+
 function submitAnswer() {
     $('#answer-submit').on('click', event => {
 
         event.preventDefault();
 
-        let inputtedAnswer = $(`input[name=question-${USERDATASTORE.currentStep}]:checked`).val();
-
-        if (inputtedAnswer !== undefined) {
-
-            let selectedAnswer = QUESTIONSTORE[USERDATASTORE.currentStep - 1].possibleAnswers.find(item => item.id === inputtedAnswer);
-
-            if (selectedAnswer !== undefined) {
-
-                let basicAnswerRevealText = ""; 
-                let basicAnswerRevealTextClass = "";
-
-                if (selectedAnswer.number === QUESTIONSTORE[USERDATASTORE.currentStep - 1].correctAnswerNumber) {
-
-                    basicAnswerRevealText = "Correct!";
-                    basicAnswerRevealTextClass = "answer-revealer__title--correct";
-
-                    USERDATASTORE.correctScore++; 
-
-                    flashColorTimeout('#js-scorekeeper-correct-span', '#a6caff');
-
-                } else { 
-
-                    basicAnswerRevealText = "Incorrect!";
-                    basicAnswerRevealTextClass = "answer-revealer__title--incorrect";
-
-                    USERDATASTORE.incorrectScore++; 
-
-                    flashColorTimeout('#js-scorekeeper-incorrect-span', '#f5b9b9');
-                }
-
-                // ensures the score updates right away
-                renderQuizHeaderElements();
-
-                $(event.currentTarget).hide();
-
-                const endQuizHtml = `
-                    <div class="answer-revealer">
-                        <h3 class='${basicAnswerRevealTextClass}'>${basicAnswerRevealText}</h3>
-                        <p>${selectedAnswer.answerGuessedResponseHtml}</p>
-                        <p>And that's a wrap, folks! You scored ${USERDATASTORE.correctScore} out of ${QUESTIONSTORE.length}.</p>
-                        <button id='start-over' role='button' class='screen__button answer-revealer__button'>Start again</button>
-                    </div>            
-                `;
-
-                const revealAnswerHtml = `
-                    <div class="answer-revealer">
-                        <h3 class='${basicAnswerRevealTextClass}'>${basicAnswerRevealText}</h3>
-                        <p>${selectedAnswer.answerGuessedResponseHtml}</p>
-                        <button id='next-question' role='button' tabindex='0' class='screen__button answer-revealer__button'>Proceed <span class="extraneous-label-text">to Next Question</span></button>
-                    <div>
-                `;
-
-                const bottomNavBarHtml = isEndOfQuiz() ? endQuizHtml : revealAnswerHtml;
-
-                $('.bottom-nav-bar').addClass('bottom-nav-bar--reveal-mode');
-                $('.reveal-mode-scrim').addClass('reveal-mode-scrim--active');
-                $('.bottom-nav-bar__content').append(bottomNavBarHtml);
-            }
-
-            else {
-                console.log("Something went wrong: the selected answer does not exist in the database store");
-            }
-
-        } else {
-
-            console.log("Nothing was chosen before the user clicked the submit button");
-
-        } 
+        popupAnswerRevealer();
     });
 }
 
 function listenForKeyDown() {
-    document.addEventListener("keydown", event => {
+    document.addEventListener("keydown", event => {        
         // for accessibility; allows enter or space key to trigger next step or quiz refresh on proceed/start over buttons
-        // TODO: there's probably a better way to do this in the future than reading off a DOM element class! 
-        if ((event.key === " " || event.key === "Enter" || event.key === "Spacebar") && $('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
+        let inputtedAnswer = $(`input[name=question-${USERDATASTORE.currentStep}]:checked`).val();
 
+        if ((event.key === " " || event.key === "Enter" || event.key === "Spacebar") && inputtedAnswer !== undefined) {
             event.preventDefault(); //prevents scroll on space bar
-            resetBottomBarToDefaultState(); 
+            
+            // TODO: there's probably a better way to do this in the future than reading off a DOM element class! 
+            if ($('.bottom-nav-bar').hasClass('bottom-nav-bar--reveal-mode')) {
 
-            if (!isEndOfQuiz()) {
-                proceedToNextStep();
+                resetBottomBarToDefaultState(); 
+
+                if (!isEndOfQuiz()) {
+                    proceedToNextStep();
+                }
+                else {
+                    resetQuiz();
+                }
             }
+
             else {
-                resetQuiz();
+                popupAnswerRevealer();
             }
         }
     });

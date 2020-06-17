@@ -39,7 +39,7 @@
                 <div class="header__counter header__counter--right header__score">
                     <p>Score</p>
                     <h3>
-                        <span class="header__score--symbol" aria-label="Correct Answers">
+                        <span class="header__score--symbol">
                             &plus;
                         </span>
                         <span id="js-scorekeeper-correct-span">
@@ -49,7 +49,7 @@
                             Correct 
                         </span>
                         ,
-                        <span class="header__score--symbol" aria-label="Incorrect Answers">
+                        <span class="header__score--symbol">
                             &minus;
                         </span>
                         <span id="js-scorekeeper-incorrect-span">
@@ -67,15 +67,15 @@
                 <form id="quiz-form">
                     <fieldset>
                         <legend id="quiz-form__label">
-                            <p id="question"><!--quiz question is filled in with JS --></p>
+                            <h4 id="question"><!--quiz question is filled in with JS--></h4>
                         </legend>
-                        <ul class="answers-list" role="radiogroup" aria-labelledby="quiz-form__label" tabindex="0">
+                        <ul class="answers-list" role="radiogroup" aria-labelledby="quiz-form__label">
                             <!--quiz answers are filled in with JS-->
                         </ul>
                     </fieldset>
                     <nav class="bottom-nav-bar">
                         <div class="bottom-nav-bar__content">
-                            <button id="answer-submit" role="button" type="submit">
+                            <button id="answer-submit" type="submit">
                                 Submit Answer
                             </button>
                         </div>
@@ -84,7 +84,8 @@
             </section>
         </main>
         <div class="reveal-mode-scrim"></div>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
         <script src="//code.jquery.com/jquery.min.js"></script>
         <script src="store.js"></script>
         <script src="scripts.js"></script>

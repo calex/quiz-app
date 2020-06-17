@@ -160,7 +160,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "waterboy.jpg",
                 supportingImageAltText: "The Waterboy movie still",
                 supportingInfoText: "",
-                answerGuessedResponseHtml: "The Waterboy‘s worldwide total was a respectable $185 million, but it has not yet made $200 million at the box office."
+                answerGuessedResponseHtml: "<i>The Waterboy<i>‘s worldwide total was a respectable $185 million, but it has not yet made $200 million at the box office."
             }
         ]
     },
@@ -176,7 +176,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "talented-mr-ripley.jpg",
                 supportingImageAltText: "Movie still from The Talented Mr. Ripley",
                 supportingInfoText: "1999",
-                answerGuessedResponseHtml: "Though it boasts an impressive cast of award winners like Matt Damon and Jude Law, nobody in the cast has won all of the particular awards listed above."
+                answerGuessedResponseHtml: "Though <i>Ripley</i> boasts an impressive cast of award winners like Matt Damon and Jude Law, nobody in the cast has won all of the particular awards listed above."
             },
             {
                 id: cuid(),
@@ -212,7 +212,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "men-women-and-children.jpg",
                 supportingImageAltText: "Movie still from Men, Women, and Children",
                 supportingInfoText: "2014",
-                answerGuessedResponseHtml: "This ensemble movie had a very talented cast, but as such, no lead roles. Small clue: The cast does <i>include</i> the lead actor or actress of the actual answer to this question."
+                answerGuessedResponseHtml: "<i>Men, Women, and Children</i> had a very talented cast, but as such, no lead roles. Small clue: The cast does <i>include</i> the lead actor or actress of the actual answer to this question."
             }
         ]
     },
@@ -228,7 +228,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "when-harry-met-sally.jpg",
                 supportingImageAltText: "Movie still from When Harry Met Sally",
                 supportingInfoText: "1989",
-                answerGuessedResponseHtml: 'Though this movie has some incredibly memorable and quotable lines&mdash;"I\'ll have what she\'s having"&mdash;this was not one of them.'
+                answerGuessedResponseHtml: 'Though <i>When Harry Met Sally</i> has some incredibly memorable and quotable lines&mdash;"I\'ll have what she\'s having"&mdash;this was not one of them.'
             },
             {
                 id: cuid(),
@@ -237,7 +237,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "splash.jpg",
                 supportingImageAltText: "Splash movie still",
                 supportingInfoText: "1984",
-                answerGuessedResponseHtml: "Though Daryl Hannah have inspired Tom Hanks to similar feelings in this movie, this is not the correct answer."
+                answerGuessedResponseHtml: "Though Daryl Hannah have inspired Tom Hanks to similar feelings in <i>Splash</i>, it was not the correct answer."
             },
             {
                 id: cuid(),
@@ -246,7 +246,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "joe-versus-the-volcano.jpg",
                 supportingImageAltText: "Movie still from Joe Versus the Volcano",
                 supportingInfoText: "1990",
-                answerGuessedResponseHtml: "This movie is full of big, grand feelings articulated boldly, much like the quote above. But it did not include it."
+                answerGuessedResponseHtml: "<i>Joe</i> is full of big, grand feelings articulated boldly, much like the quote above. But it did not include it."
             },
             {
                 id: cuid(),
@@ -255,7 +255,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "uncut-gems.jpg",
                 supportingImageAltText: "Movie still from Uncut Gems",
                 supportingInfoText: "2019",
-                answerGuessedResponseHtml: "Though it does star Adam Sandler&mdash;like the movie that is the correct answer to this question (hint hint!)&mdash;and is full of grandiose and bombastic dialogue similar to the quote in the question, this was not a line in the film."
+                answerGuessedResponseHtml: "Though <i>Uncut Gems</i> does star Adam Sandler&mdash;like the movie that is the correct answer to this question!&mdash;and is full of grand ialogue similar to the quote in the question, this was not a line in the film."
             },
             {
                 id: cuid(),
@@ -264,7 +264,7 @@ const QUESTIONSTORE = [
                 supportingImageUri: "punch-drunk-love.jpg",
                 supportingImageAltText: "Movie still from Punch-Drunk love",
                 supportingInfoText: "2004",
-                answerGuessedResponseHtml: "This beautifully dream-like movie has Adam Sandler playing a powerful role that allows him  to perfectly use his Sandler-ness to portray a man coming to grips with his feelings."
+                answerGuessedResponseHtml: "<i>Punch-Drunk Love</i> beautifully dream-like movie has Adam Sandler playing a powerful role that allows him to perfectly use his Sandler-ness to portray a man coming to grips with his feelings."
             }
         ]
     }
